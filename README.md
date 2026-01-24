@@ -1,12 +1,9 @@
 # Bluetooth Presence Detection System - Proof of Concept
+*Real-time, privacy-preserving presence detection for adaptive soundscape systems*
 
 <div>
-
-**Real-time, privacy-preserving presence detection for adaptive soundscape systems** <br>
 **This system extends **CoSounds**, developed at natHACKS 2025- a complete reimagining of how students interact with adaptive soundscape systems.**
-
  [Documentation](https://drive.google.com/file/d/1aJjhq5XfcSvrsh3bxsnt4j4HbBal0YQZ/view?usp=sharing)
-
 </div>
 
 ---
