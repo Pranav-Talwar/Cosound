@@ -95,7 +95,7 @@ Create `src/server/.env`:
 # Supabase Configuration
 SUPABASE_URL=https://your-project.supabase.co
 SUPABASE_ANON_KEY=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
-SUPABASE_SERVICE_ROLE_KEY=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
+SUPABASE_SERVICE_ROLE_KEY=ey
 
 # Server Configuration
 PORT=3000
@@ -115,7 +115,7 @@ Create `src/web/.env`:
 ```env
 # Supabase Configuration (same as server)
 VITE_SUPABASE_URL=https://your-project.supabase.co
-VITE_SUPABASE_ANON_KEY=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
+VITE_SUPABASE_ANON_KEY=eyJhbGciOiJ
 VITE_API_URL=
 SPOTIFY_CLIENT_ID=
 SPOTIFY_CLIENT_SECRET=

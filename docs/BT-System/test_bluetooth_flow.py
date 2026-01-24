@@ -8,9 +8,6 @@ import json
 import time
 
 # Configuration
-DJANGO_API_URL = "http://localhost:8000/api"
-TEST_USER_ID = "test-user-001"  # POC test user ID
-LAPTOP_MAC = "50:E7:B7:36:79:A4"  # Your laptop MAC (with colons)
 
 def print_section(title):
     print(f"\n{'='*60}")

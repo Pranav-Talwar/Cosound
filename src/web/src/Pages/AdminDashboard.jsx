@@ -1,8 +1,6 @@
 import { useState, useEffect } from 'react';
 
-const DJANGO_API_URL = "http://10.29.148.151:8000/api";
-const SUPABASE_URL = "https://bjieozmcptbxgbvzpfyc.supabase.co";
-const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJqaWVvem1jcHRieGdidnpwZnljIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjI1NTQ1NzYsImV4cCI6MjA3ODEzMDU3Nn0.Oq6ZL3L3epSTiGF_dtZ5IykfJEQAsGCipsL8BRHoBrk";
+
 
 export default function AdminDashboard() {
   const [devices, setDevices] = useState([]);

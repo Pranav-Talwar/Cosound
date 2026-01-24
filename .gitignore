@@ -49,3 +49,5 @@ yarn-debug.log*
 yarn-error.log*
 Chathistory.txt
 .claude/settings.local.json
+.claude/
+.claude/settings.local.json

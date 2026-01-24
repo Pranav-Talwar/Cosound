@@ -21,8 +21,7 @@ logger = logging.getLogger(__name__)
 
 # BLE Service and Characteristic UUIDs
 DEVICE_NAME = "TalwarLaptop"  # Your laptop's advertised name
-SERVICE_UUID = "12345678-1234-5678-1234-56789abcdef0"  # Custom service UUID
-CHAR_UUID = "12345678-1234-5678-1234-56789abcdef1"  # Custom characteristic UUID
+
 
 
 def read_callback(characteristic):
@@ -93,7 +92,7 @@ async def main():
         print("it will detect ANY BLE device nearby.")
         print()
         print("To verify your laptop is being scanned:")
-        print("1. Check if AC:F2:3C:D9:97:4E appears in scanner logs")
+        print("1. Check if AC:F2:3C:XXXX appears in scanner logs")
         print("2. Your laptop may already be visible if Bluetooth is enabled")
         print()
         
