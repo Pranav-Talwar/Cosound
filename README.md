@@ -1,197 +1,155 @@
-# 🎵 Cosound - Interactive Music Voting Platform
+# Bluetooth Presence Detection System - Proof of Concept
 
-A real-time music voting and recommendation system that allows users to vote on songs using NFC tags or web interface, while capturing user preferences to deliver a collective personalized music recommendations.
+<div align="center">
 
-## 🎯 What Is This?
+**Real-time, privacy-preserving presence detection for adaptive soundscape systems**
+**This system extends **CoSounds**, developed at natHACKS 2025, a complete reimagining of how students interact with adaptive soundscape systems.**
 
-**Cosound** is an interactive music engagement platform designed for social listening experiences. It combines:
+ [Documentation](https://drive.google.com/file/d/1aJjhq5XfcSvrsh3bxsnt4j4HbBal0YQZ/view?usp=sharing)
 
-- **Real-time Voting**: Vote on currently playing songs via NFC tags or web interface
-- **Preference Learning**: Collect user music preferences through an intuitive survey
-- **Smart Recommendations**: Generate personalized song recommendations based on collective preferences
-- **Leaderboard System**: Track top-rated songs and user engagement
-- **Session Management**: Manage listening rooms and user participation
+</div>
+
+---
+
+## 🎯 The Problem
+
+The natHACKS 2025 CoSounds system used **timer-based presence tracking** with a 2-hour timeout. The problem? Timers detect entry but not departure.
+
+**Consequences:**
+- Students leaving early remain "present" → skews soundscape optimization
+- Students staying longer get disconnected → manual reconnection required
+- System operates on assumptions, not real occupancy data
+
+**Real Impact:** If the system thinks 15 people are present but only 8 remain, it optimizes soundscapes for phantom preferences instead of actual students.
+
+---
+
+## 💡 The Solution
+
+Replace timer assumptions with **automatic, real-time Bluetooth presence detection**. A Raspberry Pi continuously scans for registered devices within range. The Bluetooth signal radius naturally corresponds to room boundaries, creating an automatic geofence that accurately reflects who is actually present.
+
+**Key Innovation:** NFC tap gating ensures students must explicitly opt-in before tracking begins—passive Bluetooth scanning alone does not create sessions.
+
+---
+
+## ✨ Features
+
+- **🔐 Privacy-First Design** - No passive tracking; requires explicit NFC tap consent
+- **⚡ Automatic Session Management** - PostgreSQL triggers handle entire lifecycle
+- **🎯 Real-Time Detection** - Continuous Bluetooth scanning with 10-second intervals
+- **⏱️ Grace Period System** - 15-minute buffer for brief absences (bathroom breaks, coffee runs)
+- **📊 Built-in Analytics** - NumPy/Matplotlib for session statistics and visualization
+- **🔄 Real-Time Dashboard** - React + Supabase subscriptions for live status updates
+- **🛡️ Concurrent User Support** - Multiple students tracked independently without conflicts
+
+---
 
 ## 🏗️ Architecture
 
-The project consists of three main components:
+<img width="651" height="428" alt="image" src="https://github.com/user-attachments/assets/0a1c013d-2a88-4124-b516-2b4820336585" />
 
-### 1. **Web Application** (`src/web/`)
+### Tech Stack
 
-- React-based responsive web interface
-- Real-time voting interface with NFC tag support
-- User authentication via Supabase
-- Music preference survey system
-- Vote confirmation animations
-- User settings and profile management
+| Component | Technology |
+|-----------|-----------|
+| **Backend** | Django, Python, Django REST Framework |
+| **Database** | Supabase PostgreSQL with Row Level Security |
+| **Hardware** | Raspberry Pi 3 + Python Bleak |
+| **Frontend** | React.js, Vite, TailwindCSS |
+| **Analytics** | NumPy, Matplotlib |
 
-### 2. **Backend Server** (`src/server/`)
+---
 
-- Express.js REST API
-- Supabase integration for data persistence
-- JWT authentication
-- API key protection for model endpoints
-- Real-time session management
+## 🔄 How It Works
 
-### 3. **Machine Learning Model** (`ml_model`)
+### 1️⃣ NFC Tap Check-In (Explicit Consent)
 
-#### What It Does
-
-The ML model classifies audio into various environmental sound categories:
-
-User preferences are collected for these categories (values 0-1), which the system uses to recommend songs with matching ambient characteristics.
-
-#### How It Works
-
-- **Dataset**: Uses the ESC-50 dataset (Environmental Sound Classification - 50 categories)
-- **Model**: Linear Ridge Regression classifier
-- **Input**: Audio files (.wav format)
-- **Output**: Classification scores for each of the 5 sound categories
-- **Integration**: User preference vectors are matched against song audio profiles
-
-## 🚀 Getting Started
-
-#### 1. Clone the repository
-
-```bash
-git clone https://github.com/ohjime/soundguys.git
-cd soundguys
+```
+Student taps NFC tag 
+  → System sets tap_flag = true in database
+  → Raspberry Pi continuously scans for Bluetooth devices
+  → Django creates session ONLY when:
+      ✓ tap_flag == true 
+      ✓ AND device detected
+  → tap_flag resets to false (single-use)
+  → Device status → "connected"
 ```
 
-#### 2. Install Backend Server Dependencies
+### 2️⃣ Automatic Tracking
 
-```bash
-cd src/server
-npm install
+Once checked in, the system monitors device presence:
+- **30-second detection timeout** - Accommodates signal fluctuations
+- **15-minute grace period** - Handles brief absences without re-authentication
+- **PostgreSQL triggers** - Automatically manage session lifecycle
+
+### 3️⃣ Automatic Departure
+
+```
+Device leaves Bluetooth range
+  → System enters 30-second timeout
+  → Grace period begins (15 minutes)
+  → If device doesn't return:
+      → Trigger fires: end_sessions_on_grace_period
+      → Session ends with accurate timestamp
 ```
 
-#### 3. Install Web Application Dependencies
+### Session States
 
-```bash
-cd ../web
-npm install
-```
+| State | Description |
+|-------|-------------|
+| `connected` | Device actively detected with valid NFC tap |
+| `disconnected` | Device not in range or session ended |
+| `grace_period` | Temporary buffer before marking disconnected |
 
-#### 4. Install ML Model Dependencies
+---
 
-```bash
-cd ../../ml_model
-python -m venv venv
-# On Windows:
-venv\Scripts\activate
-# On Mac/Linux:
-source venv/bin/activate
 
-pip install -r requirements.txt
-```
 
-### Environment Setup
+## 🔬 Context
 
-#### 📝 Server Environment Variables
 
-Create `src/server/.env`:
 
-```env
-# Supabase Configuration
-SUPABASE_URL=https://your-project.supabase.co
-SUPABASE_ANON_KEY=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
-SUPABASE_SERVICE_ROLE_KEY=ey
+CoSounds replaces multi-step feedback (QR codes, apps, surveys) with **instant NFC tap interaction**. Students vote in real-time using physical Green/Red NFC tags. The ML pipeline uses Environmental Sound Classification (ESC-50 dataset) with collective utility optimization to aggregate individual preferences into a single coherent soundscape for shared spaces.
 
-# Server Configuration
-PORT=3000
+### Why Presence Detection Matters
 
-# API Security (choose a strong random string)
-API_KEY=your_secret_api_key_here
-```
+Accurate presence detection enables:
+- ✅ Precise entry/exit timestamps for behavioral research
+- ✅ Correlation between soundscape preferences and time-of-day
+- ✅ Group study dynamics pattern analysis
+- ✅ Real-time occupancy analytics
+- ✅ Proper aggregation of only currently present students
 
-2. **API_KEY**:
-   - Generate a random secure string (e.g., using `openssl rand -hex 32`)
-   - This protects the ML model endpoints from unauthorized access
+---
 
-#### 📝 Web Environment Variables
+## 🐛 Known Limitations & Solutions
 
-Create `src/web/.env`:
+MAC address randomization on modern devices and lack of iOS web Bluetooth support present challenges for client-side implementations, but this is a backend presence detection system where devices are pre-registered in the database. Future work includes developing a native mobile app for automatic device registration that detects MAC addresses during onboarding, eliminating manual registration and supporting both iOS and Android platforms with proper Bluetooth permissions.
 
-```env
-# Supabase Configuration (same as server)
-VITE_SUPABASE_URL=https://your-project.supabase.co
-VITE_SUPABASE_ANON_KEY=eyJhbGciOiJ
-VITE_API_URL=
-SPOTIFY_CLIENT_ID=
-SPOTIFY_CLIENT_SECRET=
-SPOTIFY_REDIRECT_URI=
-OPEN_API_KEY=
+---
 
-# Backend API URL
-VITE_API_BASE_URL=http://localhost:3000
-```
+## 🔮 Future Enhancements
 
-**Note:** Use the same Supabase URL and anon key as the server. The `VITE_` prefix is required for Vite to expose these to the browser.
+- [ ] **Native Mobile App** - Automatic device registration with MAC address detection
+- [ ] **BLE Beacon Integration** - Enhanced positioning with Bluetooth Low Energy beacons
+- [ ] **Differential Privacy** - Enhanced privacy controls for sensitive data
+- [ ] **Export Functionality** - CSV/Excel reports for administrators and researchers
 
-## 🎮 Running the Application
+---
 
-### Start the Backend Server
+### Resources
 
-```bash
-cd src/server
-npm start
-# Or for development with auto-reload:
-npm run dev
-```
+- 🎨 [CoSounds on Devpost](https://devpost.com/software/cosounds)
+- 💻 [GitHub Repository](https://github.com/Pranav-Talwar/Cosound)
+- 📊 [Cosounds Pitch Deck]()
+- 🔬 [MSL Official Website](https://sites.google.com/ualberta.ca/msl)
 
-Server will run on `http://localhost:3000`
+---
 
-**Verify it's working:** Visit `http://localhost:3000/health`
+<div align="center">
 
-```json
-{
-  "status": "ok",
-  "timestamp": "2025-11-10T..."
-}
-```
+**Project Status:** ✅ Functional Proof of Concept - Core Features Implemented and Tested
 
-### Start the Web Application
+Made with ❤️ for better learning environments
 
-In a new terminal:
-
-```bash
-cd src/web
-npm run dev
-```
-
-Web app will run on `http://localhost:5173` (Vite default)
-
-## 🛠️ Technology Stack
-
-**Frontend:**
-
-- React 19
-- React Router DOM
-- TailwindCSS 4
-- Vite 7
-- Jotai (state management)
-- Lucide React (icons)
-
-**Backend:**
-
-- Node.js
-- Express 5
-- Supabase (PostgreSQL + Auth)
-- JWT Authentication
-- CORS
-
-**Machine Learning:**
-
-- Python 3.8+
-- Librosa (audio processing)
-- Scikit-learn (Ridge Regression)
-- NumPy & SciPy
-- ESC-50 Dataset
-
-## 📚 Documentation
-
-- `docs/API_DOCUMENTATION.md` - Complete REST API reference
-- `docs/MODEL_API_DOCUMENTATION.md` - ML endpoints documentation
-- `ml_model/README.md` - ML model details & training guide
-
-**Happy Voting! 🎵👍👎**
+</div>
