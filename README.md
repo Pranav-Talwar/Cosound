@@ -1,8 +1,8 @@
 # Bluetooth Presence Detection System - Proof of Concept
 
-<div align="center">
+<div>
 
-**Real-time, privacy-preserving presence detection for adaptive soundscape systems**
+**Real-time, privacy-preserving presence detection for adaptive soundscape systems** <br>
 **This system extends **CoSounds**, developed at natHACKS 2025, a complete reimagining of how students interact with adaptive soundscape systems.**
 
  [Documentation](https://drive.google.com/file/d/1aJjhq5XfcSvrsh3bxsnt4j4HbBal0YQZ/view?usp=sharing)
@@ -35,7 +35,7 @@ Replace timer assumptions with **automatic, real-time Bluetooth presence detecti
 ## ✨ Features
 
 - **🔐 Privacy-First Design** - No passive tracking; requires explicit NFC tap consent
-- **⚡ Automatic Session Management** - PostgreSQL triggers handle entire lifecycle
+- **⚡ Automatic Session Management** - PostgreSQL triggers & pg-cron handle entire lifecycle
 - **🎯 Real-Time Detection** - Continuous Bluetooth scanning with 10-second intervals
 - **⏱️ Grace Period System** - 15-minute buffer for brief absences (bathroom breaks, coffee runs)
 - **📊 Built-in Analytics** - NumPy/Matplotlib for session statistics and visualization
