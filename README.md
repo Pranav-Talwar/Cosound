@@ -3,7 +3,8 @@
 
 *This system extends **CoSounds**, developed at natHACKS 2025 -- A complete reimagining of how students interact with adaptive soundscape systems.*
  
- [Documentation](https://drive.google.com/file/d/1aJjhq5XfcSvrsh3bxsnt4j4HbBal0YQZ/view?usp=sharing)
+ [Documentation](https://drive.google.com/file/d/1aJjhq5XfcSvrsh3bxsnt4j4HbBal0YQZ/view?usp=sharing) • [CoSounds Deck](https://drive.google.com/file/d/1nI1k9LKL2yyn4SobaTB9S7pXkTnIi14_/view?usp=sharing) • [Video](https://drive.google.com/file/d/1CbsY1Lxtr8HvMyOpir7ImNoL-SS7RI9B/view?usp=sharing
+) 
 
 ---
 
