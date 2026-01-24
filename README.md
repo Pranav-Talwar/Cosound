@@ -41,7 +41,7 @@ Replace timer assumptions with **automatic, real-time Bluetooth presence detecti
 ---
 
 ## 🏗️ Architecture
-<img width="455" height="299"  alt="image" src="https://github.com/user-attachments/assets/0a1c013d-2a88-4124-b516-2b4820336585" />
+<img width="553" height="363"  alt="image" src="https://github.com/user-attachments/assets/0a1c013d-2a88-4124-b516-2b4820336585" />
 
 
 ---
